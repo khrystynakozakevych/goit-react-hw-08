@@ -1,38 +1,51 @@
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { ErrorMessage, Formik, Field, Form } from 'formik';
 import css from './ContactForm.module.css';
 import * as Yup from 'yup';
-import { addContact, updateContact } from '../../redux/contacts/operations';
+// import { addContact, updateContact } from '../../redux/contacts/operations';
 
 const ContactForm = ({ contact, onSave }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
+    const { name, number } = values;
     console.log('Submitted values:', values);
-    if (contact) {
-      console.log('Updating contact with:', contact);
-      dispatch(
-        updateContact({
-          updatedContact: values,
-        })
-      )
-        .unwrap()
-        .then(updatedContact => {
-          console.log('Updated contact response:', updatedContact);
-          onSave(updatedContact);
-        })
-        .catch(error => {
-          console.error('Error updating contact:', error, updatedContact);
-        });
-    } else {
-      dispatch(addContact(values));
-    }
+    // if (contact) {
+    //   console.log('Updating contact with:', contact);
+    //   const updatedContact = {
+    //     name: values.name,
+    //     number: values.number,
+    //   };
+    //   dispatch(
+    //     updateContact({
+    //       id: contact.id,
+    //       updatedContact: updatedContact,
+    //     })
+    //   )
+    //     .unwrap()
+    //     .then(updatedContact => {
+    //       console.log('Updated contact successfuly');
+    //       setShow;
+    //       onSave(updatedContact);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error updating contact:', error);
+    //     });
+    // } else {
+    //   dispatch(addContact(values));
+    // }
+    onSave({ name, number });
     actions.resetForm();
   };
 
   const onlyLetters = /^[A-Za-zА-Яа-яЄєІіЇїҐґ-\s]+$/;
   const phoneRegExp =
     /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/;
+
+  const initialValues = {
+    name: contact?.name || '',
+    number: contact?.number || '',
+  };
 
   const applySchema = Yup.object().shape({
     name: Yup.string()
@@ -49,13 +62,9 @@ const ContactForm = ({ contact, onSave }) => {
     <div className={css.form_container}>
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{
-          name: contact ? contact.name : '',
-          number: contact ? contact.number : '',
-          contactId: contact ? contact.contactId : null,
-          id: contact ? contact.id : null,
-        }}
+        initialValues={initialValues}
         validationSchema={applySchema}
+        enableReinitialize={true}
       >
         {() => (
           <Form className={css.form}>

@@ -39,7 +39,7 @@ const ContactsPage = () => {
     console.log('Updated contacts:', contacts);
   }, [contacts]);
 
-  console.log('Attempting to update contact:', contactToEdit);
+  // console.log('Attempting to update contact:', contactToEdit);
 
   const handleEdit = id => {
     const contact = contacts.find(contact => contact.id === id);
@@ -50,6 +50,37 @@ const ContactsPage = () => {
 
   const handleDelete = id => {
     dispatch(deleteContact(id));
+  };
+
+  const handleSave = values => {
+    if (contactToEdit) {
+      const updatedData = {
+        name: values.name,
+        number: values.number,
+      };
+      dispatch(
+        updateContact({
+          id: contactToEdit.id,
+          contactData: updatedData,
+        })
+      )
+        .then(() => {
+          console.log('Contact updated successfuly');
+          setShowForm(false);
+          setContactToEdit(null);
+        })
+        .catch(error => {
+          console.error('Error updating contact:', error);
+        });
+    } else {
+      dispatch(addContact(values))
+        .then(() => {
+          setShowForm(false);
+        })
+        .catch(error => {
+          console.error('Error adding contact:', error);
+        });
+    }
   };
 
   return (
@@ -69,26 +100,27 @@ const ContactsPage = () => {
       {showForm && (
         <ContactForm
           contact={contactToEdit}
-          onSave={values => {
-            if (contactToEdit) {
-              dispatch(
-                updateContact({
-                  contactId: contactToEdit.id,
-                  updatedContact: values,
-                })
-              )
-                .then(() => {
-                  console.log('Contact updated successfully');
-                  setShowForm(false);
-                  setContactToEdit(null);
-                })
-                .catch(error => {
-                  console.error('Error updating contact:', error);
-                });
-            } else {
-              dispatch(addContact(values));
-            }
-          }}
+          onSave={handleSave}
+          // onSave={values => {
+          //   if (contactToEdit) {
+          //     dispatch(
+          //       updateContact({
+          //         id: contactToEdit.id,
+          //         updatedContact: values,
+          //       })
+          //     )
+          //       .then(() => {
+          //         console.log('Contact updated successfully');
+          //         setShowForm(false);
+          //         setContactToEdit(null);
+          //       })
+          //       .catch(error => {
+          //         console.error('Error updating contact:', error);
+          //       });
+          //   } else {
+          //     dispatch(addContact(values));
+          //   }
+          // }}
         />
       )}
 
