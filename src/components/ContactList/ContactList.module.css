@@ -1,6 +1,8 @@
 .contacts_wrapper {
   margin: 0 auto;
   width: 230px;
+  display: flex;
+  justify-content: center;
 }
 
 .contacts_list {
@@ -19,6 +21,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 15px;
+    max-width: 630px;
+    justify-content: flex-start;
   }
 }
 

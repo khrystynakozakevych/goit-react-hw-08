@@ -24,7 +24,7 @@ const ContactsPage = () => {
   }, [dispatch]);
 
   return (
-    <div className={css.container}>
+    <div className={css.contact_page_container}>
       <h1>Contacts</h1>
       <ContactForm />
       <SearchBox />
