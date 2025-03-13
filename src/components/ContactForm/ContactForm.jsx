@@ -14,7 +14,8 @@ const ContactForm = () => {
   };
 
   const onlyLetters = /^[A-Za-zА-Яа-яЄєІіЇїҐґ-\s]+$/;
-  const phoneRegExp = /^\d{3}-\d{2}-\d{2}$/;
+  const phoneRegExp =
+    /^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/;
 
   const applySchema = Yup.object().shape({
     name: Yup.string()
@@ -23,8 +24,8 @@ const ContactForm = () => {
       .max(50, 'Max 50 characters!')
       .matches(onlyLetters, 'Only letters!'),
     number: Yup.string()
-      .required('Please enter the phon number')
-      .matches(phoneRegExp, 'Invalid format'),
+      .required('Please enter the phone number')
+      .matches(phoneRegExp, 'Probably invalid format'),
   });
 
   return (

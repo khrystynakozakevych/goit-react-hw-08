@@ -12,7 +12,7 @@ body {
   color: #161a1d;
   background: #f5f3f4;
   min-width: 320px;
-  max-width: 1440px;
+
   min-height: 100vh;
   margin: 0 auto;
   padding: 0;
@@ -21,8 +21,8 @@ body {
 #root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  max-width: 480px;
+  /* min-height: 100vh; */
+  max-width: 768px;
   border-radius: 12px;
   margin: 20px auto;
   overflow: hidden;
