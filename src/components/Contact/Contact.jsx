@@ -1,16 +1,24 @@
+import Button from '../Button/Button';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { PiNotePencil } from 'react-icons/pi';
 import css from './Contact.module.css';
 
-const Contact = ({ contact: { name, number, id }, onDelete }) => {
+const Contact = ({ contact: { name, number, id }, onDelete, onEdit }) => {
   return (
     <div className={css.contact_container}>
-      <div>
+      <div className={css.name_icon_wrapper}>
         <p className={css.name}>{name}</p>
-        <a href={`tel:${number}`}>{number}</a>
+        <div className={css.btn_group}>
+          <Button tooltip="Modify" onClick={() => onEdit(id)}>
+            <PiNotePencil />
+          </Button>
+          <Button tooltip="Delete" onClick={() => onDelete(id)}>
+            <AiOutlineDelete />
+          </Button>
+        </div>
       </div>
 
-      <div className={css.btn_group}>
-        <button onClick={() => onDelete(id)}>Delete</button>
-      </div>
+      <a href={`tel:${number}`}>{number}</a>
     </div>
   );
 };

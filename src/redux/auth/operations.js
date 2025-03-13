@@ -5,10 +5,12 @@ axios.defaults.baseURL = 'https://connections-api.goit.global';
 
 const setAuthHeader = token => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  localStorage.setItem('token', token);
 };
 
 const clearAuthHeader = () => {
   axios.defaults.headers.common.Authorization = '';
+  localStorage.removeItem('token');
 };
 
 export const register = createAsyncThunk(
@@ -51,9 +53,7 @@ export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
 export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
-    const state = thunkAPI.getState();
-    const token = state.auth.token;
-
+    let token = localStorage.getItem('token');
     if (!token) {
       return thunkAPI.rejectWithValue('No token found');
     }
@@ -61,7 +61,7 @@ export const refreshUser = createAsyncThunk(
     setAuthHeader(token);
     try {
       const { data } = await axios.get('/users/current');
-      return data;
+      return { user: data, token };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

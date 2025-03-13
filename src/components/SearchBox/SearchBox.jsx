@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFilter } from '../../redux/filters/slice';
 import { selectNameFilter } from '../../redux/filters/selectors';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 import css from './SearchBox.module.css';
 
 const SearchBox = () => {
@@ -13,7 +14,10 @@ const SearchBox = () => {
 
   return (
     <div className={css.search_container}>
-      <p>Find contacts by name</p>
+      <div className={css.search_tex_wrapper}>
+        <FaMagnifyingGlass />
+        <p>Search</p>
+      </div>
       <input type="text" value={filter} onChange={handleFilterChange} />
     </div>
   );

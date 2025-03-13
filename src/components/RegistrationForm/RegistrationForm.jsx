@@ -26,38 +26,56 @@ const RegistrationForm = () => {
   });
 
   return (
-    <Formik
-      initialValues={{ name: '', email: '', password: '' }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {() => (
-        <Form className={css.regist_form}>
-          <div className={css.field}>
-            <Field type="text" name="name" placeholder="Name" />
-            <ErrorMessage component="div" className={css.error} name="name" />
-          </div>
-
-          <div className={css.field}>
-            <Field type="email" name="email" placeholder="Email" />
-            <ErrorMessage component="div" className={css.error} name="email" />
-          </div>
-
-          <div className={css.field}>
-            <Field type="password" name="password" placeholder="Password" />
-            <ErrorMessage
-              component="div"
-              className={css.error}
-              name="password"
-            />
-          </div>
-
-          <button type="submit" className={css.regist_btn}>
-            Register
-          </button>
-        </Form>
-      )}
-    </Formik>
+    <div className={css.form_container}>
+      <Formik
+        initialValues={{ name: '', email: '', password: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {() => (
+          <Form className={css.form}>
+            <div className={css.field_wrapper}>
+              <Field
+                className={css.input}
+                type="text"
+                name="name"
+                placeholder="Name"
+              />
+              <ErrorMessage component="div" className={css.error} name="name" />
+            </div>
+            <div className={css.field_wrapper}>
+              <Field
+                className={css.input}
+                type="email"
+                name="email"
+                placeholder="Email"
+              />
+              <ErrorMessage
+                component="div"
+                className={css.error}
+                name="email"
+              />
+            </div>
+            <div className={css.field_wrapper}>
+              <Field
+                className={css.input}
+                type="password"
+                name="password"
+                placeholder="Password"
+              />
+              <ErrorMessage
+                component="div"
+                className={css.error}
+                name="password"
+              />
+            </div>
+            <button type="submit" className={css.regist_btn}>
+              Register
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
   );
 };
 

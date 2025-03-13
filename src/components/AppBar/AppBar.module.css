@@ -8,6 +8,8 @@
   display: flex;
   justify-content: space-around;
   font-size: larger;
+  font-weight: 600;
+  align-items: center;
 }
 
 .header_nav a:hover {

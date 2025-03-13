@@ -24,3 +24,16 @@
     border-color: #53575a;
   }
 }
+
+.search_tex_wrapper {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+@media screen and (min-width: 515px) {
+  .search_container {
+    width: 100%;
+  }
+}

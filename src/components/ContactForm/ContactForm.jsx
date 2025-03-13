@@ -2,14 +2,31 @@ import { useDispatch } from 'react-redux';
 import { ErrorMessage, Formik, Field, Form } from 'formik';
 import css from './ContactForm.module.css';
 import * as Yup from 'yup';
-import { addContact } from '../../redux/contacts/operations';
+import { addContact, updateContact } from '../../redux/contacts/operations';
 
-const ContactForm = () => {
+const ContactForm = ({ contact, onSave }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
     console.log('Submitted values:', values);
-    dispatch(addContact(values));
+    if (contact) {
+      console.log('Updating contact with:', contact);
+      dispatch(
+        updateContact({
+          updatedContact: values,
+        })
+      )
+        .unwrap()
+        .then(updatedContact => {
+          console.log('Updated contact response:', updatedContact);
+          onSave(updatedContact);
+        })
+        .catch(error => {
+          console.error('Error updating contact:', error, updatedContact);
+        });
+    } else {
+      dispatch(addContact(values));
+    }
     actions.resetForm();
   };
 
@@ -25,19 +42,24 @@ const ContactForm = () => {
       .matches(onlyLetters, 'Only letters!'),
     number: Yup.string()
       .required('Please enter the phone number')
-      .matches(phoneRegExp, 'Probably invalid format'),
+      .matches(phoneRegExp, 'Invalid format'),
   });
 
   return (
     <div className={css.form_container}>
       <Formik
         onSubmit={handleSubmit}
-        initialValues={{ name: '', number: '' }}
+        initialValues={{
+          name: contact ? contact.name : '',
+          number: contact ? contact.number : '',
+          contactId: contact ? contact.contactId : null,
+          id: contact ? contact.id : null,
+        }}
         validationSchema={applySchema}
       >
         {() => (
-          <Form>
-            <div className={css.wrapper}>
+          <Form className={css.form}>
+            <div className={css.field_wrapper}>
               <Field
                 className={css.input}
                 name="name"
@@ -49,7 +71,7 @@ const ContactForm = () => {
                 name="name"
               />
             </div>
-            <div className={css.wrapper}>
+            <div className={css.field_wrapper}>
               <Field
                 className={css.input}
                 name="number"
@@ -63,7 +85,7 @@ const ContactForm = () => {
             </div>
 
             <button className={css.form_btn} type="submit">
-              Add contact
+              {contact ? 'Update contact' : 'Add contact'}
             </button>
           </Form>
         )}
