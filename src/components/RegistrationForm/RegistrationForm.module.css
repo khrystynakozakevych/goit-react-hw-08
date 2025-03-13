@@ -1,0 +1,15 @@
+.regist_form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.regist_form input {
+  padding: 8px;
+}
+
+.regist_btn {
+  width: 90px;
+}
