@@ -30,6 +30,9 @@ const contactsSlice = createSlice({
         if (index !== -1) {
           state.items[index] = action.payload;
         }
+      })
+      .addCase(logout.fulfilled, state => {
+        state.items = [];
       });
   },
 });
