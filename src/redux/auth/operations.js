@@ -54,7 +54,7 @@ export const refreshUser = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
     let token = localStorage.getItem('token');
-    console.log('Token from localStorage:', token);
+
     if (!token) {
       return thunkAPI.rejectWithValue('No token found');
     }
