@@ -10,7 +10,7 @@ const NotFoundPage = () => {
       <Link to="/" className={css.home_link}>
         Return to HomePage
       </Link>
-      <img className={css.image} src={image} alt="page not found" />
+      <img src={image} alt="page not found" />
     </div>
   );
 };
