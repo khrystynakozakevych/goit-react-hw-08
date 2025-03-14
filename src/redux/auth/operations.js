@@ -63,6 +63,9 @@ export const refreshUser = createAsyncThunk(
       const { data } = await axios.get('/users/current');
       return { user: data, token };
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        localStorage.removeItem('token');
+      }
       return thunkAPI.rejectWithValue(error.message);
     }
   }
