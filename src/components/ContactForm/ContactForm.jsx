@@ -1,39 +1,11 @@
-// import { useDispatch } from 'react-redux';
 import { ErrorMessage, Formik, Field, Form } from 'formik';
 import css from './ContactForm.module.css';
 import * as Yup from 'yup';
-// import { addContact, updateContact } from '../../redux/contacts/operations';
 
 const ContactForm = ({ contact, onSave }) => {
-  // const dispatch = useDispatch();
-
   const handleSubmit = (values, actions) => {
     const { name, number } = values;
     console.log('Submitted values:', values);
-    // if (contact) {
-    //   console.log('Updating contact with:', contact);
-    //   const updatedContact = {
-    //     name: values.name,
-    //     number: values.number,
-    //   };
-    //   dispatch(
-    //     updateContact({
-    //       id: contact.id,
-    //       updatedContact: updatedContact,
-    //     })
-    //   )
-    //     .unwrap()
-    //     .then(updatedContact => {
-    //       console.log('Updated contact successfuly');
-    //       setShow;
-    //       onSave(updatedContact);
-    //     })
-    //     .catch(error => {
-    //       console.error('Error updating contact:', error);
-    //     });
-    // } else {
-    //   dispatch(addContact(values));
-    // }
     onSave({ name, number });
     actions.resetForm();
   };

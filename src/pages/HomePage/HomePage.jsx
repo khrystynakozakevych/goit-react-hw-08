@@ -1,4 +1,5 @@
 import css from './HomePage.module.css';
+import image from '../../../public/homePage.jpg';
 
 const HomePage = () => {
   return (
@@ -7,6 +8,7 @@ const HomePage = () => {
       <p>
         This app helps you store and manage your contacts easily and securely.
       </p>
+      <img src={image} alt="Welcome!" />
     </div>
   );
 };

@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button as MuiButton,
+} from '@mui/material';
+import {
   fetchContacts,
   deleteContact,
   updateContact,
@@ -19,6 +27,8 @@ import ContactForm from '../../components/ContactForm/ContactForm';
 import Button from '../../components/Button/Button';
 
 import { IoPersonAddSharp } from 'react-icons/io5';
+import { CircularProgress } from '@mui/material';
+import toast from 'react-hot-toast';
 
 import css from './ContactsPage.module.css';
 
@@ -30,6 +40,8 @@ const ContactsPage = () => {
   const error = useSelector(selectError);
   const [showForm, setShowForm] = useState(false);
   const [contactToEdit, setContactToEdit] = useState(null);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [contactIdToDelete, setContactIdToDelete] = useState(null);
 
   useEffect(() => {
     dispatch(fetchContacts());
@@ -39,8 +51,6 @@ const ContactsPage = () => {
     console.log('Updated contacts:', contacts);
   }, [contacts]);
 
-  // console.log('Attempting to update contact:', contactToEdit);
-
   const handleEdit = id => {
     const contact = contacts.find(contact => contact.id === id);
     console.log('Selected contact for editing:', contact);
@@ -48,8 +58,24 @@ const ContactsPage = () => {
     setShowForm(true);
   };
 
-  const handleDelete = id => {
-    dispatch(deleteContact(id));
+  const handleDeleteClick = id => {
+    setContactIdToDelete(id);
+    setOpenConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteContact(contactIdToDelete))
+      .then(() => {
+        toast.success('Contact deleted successfully!');
+      })
+      .catch(error => {
+        toast.error('Error deleting contact!');
+      });
+    setOpenConfirm(false);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenConfirm(false);
   };
 
   const handleSave = values => {
@@ -65,19 +91,22 @@ const ContactsPage = () => {
         })
       )
         .then(() => {
-          console.log('Contact updated successfuly');
+          toast.success('Contact updated successfuly');
           setShowForm(false);
           setContactToEdit(null);
         })
         .catch(error => {
+          toast.error('Error updating contact!');
           console.error('Error updating contact:', error);
         });
     } else {
       dispatch(addContact(values))
         .then(() => {
+          toast.success('Contact added successfully!');
           setShowForm(false);
         })
         .catch(error => {
+          toast.error('Error adding contact!');
           console.error('Error adding contact:', error);
         });
     }
@@ -97,42 +126,17 @@ const ContactsPage = () => {
       >
         <IoPersonAddSharp size={24} />
       </Button>
-      {showForm && (
-        <ContactForm
-          contact={contactToEdit}
-          onSave={handleSave}
-          // onSave={values => {
-          //   if (contactToEdit) {
-          //     dispatch(
-          //       updateContact({
-          //         id: contactToEdit.id,
-          //         updatedContact: values,
-          //       })
-          //     )
-          //       .then(() => {
-          //         console.log('Contact updated successfully');
-          //         setShowForm(false);
-          //         setContactToEdit(null);
-          //       })
-          //       .catch(error => {
-          //         console.error('Error updating contact:', error);
-          //       });
-          //   } else {
-          //     dispatch(addContact(values));
-          //   }
-          // }}
-        />
-      )}
+      {showForm && <ContactForm contact={contactToEdit} onSave={handleSave} />}
 
       <SearchBox />
 
-      {isLoading && <p>Loading contacts...</p>}
+      {isLoading && <CircularProgress />}
       {error && <p className={css.error}>Error: {error}</p>}
 
       {contacts.length > 0 ? (
         <ContactList
           contacts={filteredContacts}
-          onDelete={handleDelete}
+          onDelete={handleDeleteClick}
           onEdit={handleEdit}
         />
       ) : (
@@ -140,6 +144,21 @@ const ContactsPage = () => {
           No contacts yet. Add a new contact!
         </p>
       )}
+
+      <Dialog open={openConfirm} onClose={handleCancelDelete}>
+        <DialogTitle>Confirm deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this contact?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <MuiButton onClick={handleCancelDelete}>Cancel</MuiButton>
+          <MuiButton onClick={handleConfirmDelete} color="error">
+            Delete
+          </MuiButton>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

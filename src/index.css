@@ -21,7 +21,7 @@ body {
 #root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 80vh;
   max-width: 670px;
   min-width: 512px;
   border-radius: 12px;

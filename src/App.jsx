@@ -13,6 +13,8 @@ import HomePage from './pages/HomePage/HomePage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import ContactsPage from './pages/ContactsPage/ContactsPage';
+import { Toaster } from 'react-hot-toast';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,32 +27,37 @@ function App() {
   return isRefreshing ? (
     <p>Refreshing user...</p>
   ) : (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route
-          path="/register"
-          element={
-            <RestrictedRoute
-              redirectTo="/contacts"
-              element={<RegistrationPage />}
-            />
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <RestrictedRoute redirectTo="/contacts" element={<LoginPage />} />
-          }
-        />
-        <Route
-          path="/contacts"
-          element={
-            <PrivateRoute redirectTo="/login" element={<ContactsPage />} />
-          }
-        />
-      </Route>
-    </Routes>
+    <>
+      <Toaster position="top-right" />
+
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                redirectTo="/contacts"
+                element={<RegistrationPage />}
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute redirectTo="/contacts" element={<LoginPage />} />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" element={<ContactsPage />} />
+            }
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
